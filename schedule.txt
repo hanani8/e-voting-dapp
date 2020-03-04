@@ -1,0 +1,3 @@
+example.com : Display a eth address and email form.
+example.com/electionID: Display the candidate choice and ethereum address/ Privat key input fields.
+example.com/electionID/result: Display the results...

@@ -1,0 +1,68 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Opine
+link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous')
+link(rel='stylesheet' href='result.css')
+.container
+  .row
+    .col-lg-4
+    .col-lg-4.mt-5
+      h1
+        b CAST YOUR VOTE
+      form.mt-5(action='/vote/:id' method='post')
+        .form-group
+          label(for='exampleInputEmail1') Public Key
+          input#exampleInputEmail1.form-control(type='text' name='ethaddress' placeholder='Enter Public Key')
+        .form-group
+          label(for='exampleInputPassword1') Private Key
+          input#privateKey.form-control(type='text' name='pkey' placeholder='Enter Private Key')
+          span.fa.fa-fw.fa-eye.field-icon.toggle-password(toggle='#password-field')
+        .container(style='width: 650px;')
+          .row
+            .col-lg-6
+              table.table.mt-5
+                thead
+                  tr
+                    th(scope='col') #
+                    th(scope='col') Name
+                    th(scope='col') Select
+                  tr
+                    td 1
+                    td Venkat
+                    td
+                      .radio
+                        label
+                          input(type='radio' name='optradio' value='1')
+                  tr
+                    td 2
+                    td Jaswinder
+                    td
+                      .radio
+                        label
+                          input(type='radio' name='optradio' value='2')
+                  tr
+                    td 3
+                    td Sameer
+                    td
+                      .radio
+                        label
+                          input(type='radio' name='optradio' value='3')
+                  tr
+                    td 4
+                    td Hanani
+                    td
+                      .radio
+                        label
+                          input(type='radio' name='optradio' value='4')
+                  tr
+                    td 5
+                    td Tajammul
+                    td
+                      .radio
+                        label
+                          input(type='radio' name='optradio' value='5')
+                tbody#candidatesResults
+              button.btn.btn-success.btn-block(type='submit') Submit
+script(type='text/javascript' src='app.js')
