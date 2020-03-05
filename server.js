@@ -27,7 +27,7 @@ app.post('/', async function(req,res){
   });   
   try {
      const savedAddress = await address.save();
-     res.send(savedAddress);
+     res.render('dataSaved', {yourdata : address});
   } catch(err) {
     res.send("Did not save");
     console.log(err);
@@ -259,7 +259,7 @@ app.post('/vote/:id',function(req,res){
       }
     ];
     //change contract address --- Settled.
-    const contract_Address = '0x5b77fb0A623687f197D2985262703fD4B057C1B9';
+    const contract_Address = '0xddAc624E273bB4Df0d3ED3Da73475aBD3ac47C98';
     const contract = new web3.eth.Contract(abi, contract_Address);
     const myData = contract.methods.doVote(req.body.optradio).encodeABI();
     web3.eth.getTransactionCount(account1, (err, txCount) => {
@@ -280,229 +280,9 @@ app.post('/vote/:id',function(req,res){
         // Broadcast the transaction
         const transaction = web3.eth.sendSignedTransaction(raw, (err, tx) => {
             if(err) return console.log(req.body.optradio);
-            res.send(tx);
+            res.render('youVoted', {candidate: req.body.optradio, transaction: tx});
         });
     });
   })
-
-  app.get('/result/:id', function(req, res){
-    const Web3 = require('web3');
-    const Tx = require('ethereumjs-tx').Transaction;
-    const provider = new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/88492df009e34eab951ae05a2e5f1d69");
-    const web3 = new Web3(provider);
-    const abi = [
-      {
-        "inputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "voter",
-            "type": "address"
-          }
-        ],
-        "name": "voteDone",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [],
-        "name": "voteStarted",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "address",
-            "name": "voter",
-            "type": "address"
-          }
-        ],
-        "name": "voterAdded",
-        "type": "event"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "_voterAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "string",
-            "name": "_voterName",
-            "type": "string"
-          }
-        ],
-        "name": "addVoter",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "ballotOfficialAddress",
-        "outputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "name": "candidates",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "voteCount",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "candidatesCount",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "_candidateId",
-            "type": "uint256"
-          }
-        ],
-        "name": "doVote",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [],
-        "name": "endVote",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [],
-        "name": "restartVote",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [],
-        "name": "startVote",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "state",
-        "outputs": [
-          {
-            "internalType": "enum Election.State",
-            "name": "",
-            "type": "uint8"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "name": "voterRegister",
-        "outputs": [
-          {
-            "internalType": "string",
-            "name": "voterName",
-            "type": "string"
-          },
-          {
-            "internalType": "bool",
-            "name": "voted",
-            "type": "bool"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      }
-    ];
-    const contract_Address = "0x6a3ddeb914cD665675dF204F307f88C46670732e";
-    const contract = new web3.eth.Contract(abi, contract_Address);
-    //Read from here..
-    const candidatesCount = contract.methods.candidatesCount();
-    for(i=1;i<candidatesCount;i++){
-      contract.methods.candidate(i).call((err,result) => console.log(result))
-    }
-    
-})
-  
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
